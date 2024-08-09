@@ -1,10 +1,14 @@
 #!/usr/bin/python3
 """This module set the amenities prop of places"""
 from datetime import datetime, timezone
+from base_model import BaseModel
 
-
-class Amenity(db.Model):
+class Amenity(BaseModel):
     """Defines an amenity."""
+
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
 
     def to_dict(self):
         return {
