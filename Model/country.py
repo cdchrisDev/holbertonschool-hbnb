@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module define the country entity"""
-from base_model import BaseModel
+
 from cities import Cities
 from datetime import datetime
 
@@ -8,7 +8,11 @@ from datetime import datetime
 class Country(BaseModel):
     """This class define the country entity"""
 
-    cities = []
+    def __init__(self, country_name):
+        super().__init__()
+        self.country_name = country_name
+        self.cities = []
+
     def add_city(self, city):
         """Insert new city to the list"""
 
@@ -19,6 +23,7 @@ class Country(BaseModel):
         """retrieve a city from the list"""
 
         return self.cities
+
     def get_country_name(self):
         """Get a country from the list"""
 

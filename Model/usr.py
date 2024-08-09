@@ -6,6 +6,7 @@ from base_model import BaseModel
 
 
 class User(BaseModel):
+    """A base user obj"""
     
     emails = []
     user_places = []
@@ -23,10 +24,10 @@ class User(BaseModel):
         self.email = email
 
     def hash_password(self, password):
-        """"Encrypt user password""""
+        """Encrypt user password"""
 
         salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        hashed_password = bcrypt.hashpw(_password.encode('utf-8'), salt)
         return hashed_password.decode('utf-8')
     
     def to_dict(self):

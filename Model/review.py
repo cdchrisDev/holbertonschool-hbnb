@@ -3,39 +3,28 @@ from datetime import datetime, timezone
 from place import Place
 from user import User
 
-class Review():
-    """
-    Defines a review.
-    """
-    __tablename__ = 'review'
+class Review(User, Place):
+    """Define a review"""
 
-    review_id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
-    place_id = db.Column(db.Integer, db.ForeignKey('place.place_id'), nullable=False)
-    comment = db.Column(db.String(1024), nullable=False)
-    ratings = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(tz=timezone.utc))
+    def __init__(self, user_id, place_id, comment, rating):
+        """Initialize a new Review instance."""
+        super().__init__()
+        self.user_id = user_id
+        self.place_id = place_id
+        # self.name = name
+        self.comment = comment
+        self.ratings = rating
+        self.review_id = self.id
+    
+    def save(self):
+        """Save the review only if the user is not the host of the place."""
+        if self.user_id == self.place_id.host_id:
+            raise ValueError("Host cannot review their own place.")
+        super().save()
 
-    # def save(self):
-    #     """Save the review only if the user is not the host of the place."""
-    #     place = Place.query.get(self.place_id)
-    #     if self.user_id == place.host_id:
-    #         raise ValueError("Host cannot review their own place.")
-    #     db.session.add(self)
-    #     db.session.commit()
-
-    def save_to_db(self):
-        """Saves the user information to the database."""
-        db.session.add(self)
-        db.session.commit()
-
-    def delete_from_db(self):
-        """Deletes the user information from the database."""
-        db.session.delete(self)
-        db.session.commit()
 
     def to_dict(self):
-        """Return a dictionary representation of the Review instance."""
+        """Return the dict rep of review instance"""
         return {
             'review_id': self.review_id,
             'user_id': self.user_id,
