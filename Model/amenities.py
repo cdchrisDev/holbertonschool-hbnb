@@ -5,10 +5,37 @@ from base_model import BaseModel
 
 class Amenity(BaseModel):
     """Defines an amenity."""
+    amen = {
+        'tv': None,
+        'bathroom_num': 0,
+        'backyard': None,
+        'basement': None,
+        'bedroom_num': 0,
+        'laundry_ser': None,
+        'dish_washer_and_dryer': None,
+        'security': [1..5],
+        'Control_atmosfere': ['heating', 'ventilation',
+        'air_condition'],
+        'hot_water': None,
+        'fireplace': None,
+        'WIFI': None,
+        'kitchen': None,
+        'swimming_pool': None,
+        'self_check-in': None,
+        'furniture_vovers': None,
+        'high_chair': None,
+        'entretainment': ['videogames', 'pool', 'ping-pong'.
+        'park', 'stereo'],
+        'fridge': None,
+        'view_balcony': None
+    }
+    
+    def __init__(self, name, AmenList):
+        """set the amenities available on place"""
 
-    def __init__(self, name):
-        super().__init__()
         self.name = name
+        self.AmenList = []
+
 
     def to_dict(self):
         return {
