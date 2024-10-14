@@ -8,4 +8,4 @@ This project has the following objectives to my learning journey
 * Deployment using docker
 
 ## 0. High-level package diagram
-![Diagram](Docs/HBnB_HL-diagram.png)
+![Diagram](Docs/HBnB_HL-diagram.jpg)
