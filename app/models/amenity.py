@@ -4,7 +4,12 @@ from datetime import datetime, timezone
 from base_model import BaseModel
 
 class Amenity(BaseModel):
-    """Defines an amenity."""
+
+    def __init__(self, id, name=''):
+        super().__init__()
+        self.id = id
+        self.name = name
+    """Defines an amenity
     amen = {
         'tv': None,
         'bathroom_num': 0,
@@ -29,7 +34,8 @@ class Amenity(BaseModel):
         'fridge': None,
         'view_balcony': None
     }
-    
+    """
+
     def __init__(self, name, AmenList):
         """set the amenities available on place"""
 

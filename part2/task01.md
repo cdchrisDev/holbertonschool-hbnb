@@ -1,6 +1,6 @@
 # What are the steps involved in this web application ?
 1. instante the Flask App Object on `app.__init__`
-    * By doing `Flask(__name__)` this tells flask that were going to use the app as the __name__ special methods sets. But, we can also create a function to actually make our app be born
+    * By doing `Flask(__name__)` this tells flask that we are going to use the app as the __name__ special method set. But, we can also create a function to actually make our app be born
     * app instante from `Flask` Module
     * api instante a class called `Api` from `flask_restx` which takes as the first argument the `Flask` instance and the rest of the arguments are meta 
 ```
@@ -17,7 +17,7 @@ def delete(self, obj_id):
 ```
 3. Now, to implement good facade pattern we import our "database handler" into a file which serve
 as individual entity management
-```
+```python
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
@@ -26,13 +26,13 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
 ```
 4. We instante the Facade class
-```
+```python
 from app.services.facade import HBnBFacade
 
 facade = HBnBFacade()
 ```
 5. set the script to run the entire app in `run.py` on root
-```
+```python
 from app import create_app
 
 app = create_app() #it does not truncate variables because there not in the same scope
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 6. Basic config
-```
+```py
 import os
 
 class Config:

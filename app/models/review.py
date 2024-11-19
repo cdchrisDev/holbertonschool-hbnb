@@ -5,16 +5,13 @@ from user import User
 
 class Review(User, Place):
     """Define a review"""
-
-    def __init__(self, user_id, place_id, comment, rating):
-        """Initialize a new Review instance."""
+    def __init__(self, id, text='', rating=int(0), place, user):
         super().__init__()
-        self.user_id = user_id
-        self.place_id = place_id
-        # self.name = name
-        self.comment = comment
-        self.ratings = rating
-        self.review_id = self.id
+        self.id = id
+        self.text = text
+        self.rating = rating
+        self.place = Place()
+        self.user = User()
     
     def save(self):
         """Save the review only if the user is not the host of the place."""

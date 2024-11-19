@@ -8,34 +8,24 @@ from .base_model import BaseModel
 class User(BaseModel):
     """A base user obj"""
     
-    emails = []
-    user_places = [] 
-    users = {}
-
-
-    def __init__(self, firstName, lastName, password, email):
-        """This func init the basic user data, every user
-        must have it to be able to exist in database
-        """
-
-        self.firstName = firstName
-        self.lastName = lastName
-        # self._password = self.hash_password(password)
+    def __init__(self, id, first_name, last_name, email, is_admin = False):
+        super.()__init__()
+        self.id = id
+        self.first_name = Fn[:50]
+        self.last_name = Ln[:50]
         self.email = email
+        self.is_admin = is_admin
 
-        firstName = Fn['first_name'][:50]
-        lastName = Ln['last_name'][:50]
 
     def add_unique_email(self, email):
         if not isinstance(email, str):
             raise TypeError('wrong type')
 
-        if email in emails:
-            raise EmailRegError()
+        for e in emails:
+            if e == email:
+                raise EmailRegError()
 
         self.emails.append(email)
-
-    #def is_admin(Self, Bool=False)
 
     #def hash_password(self, password):
     #    """Encrypt user password"""
