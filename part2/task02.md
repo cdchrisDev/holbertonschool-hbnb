@@ -80,4 +80,52 @@ class Place(BaseModel):
         self.amenities.append(amenity)
 ```
 
-3. 
+3. Testing, we create a folder called test where will be testing our core logic independently and the relationship between them
+```python
+#!/usr/bin/python3
+from app.models.user import User
+
+
+def test_user_creation():
+    user = User(id="14124!", first_name='John', last_name='lopez', email='juan.feli.lopez@gmail.com')
+    assert user.first_name == 'John'
+    assert user.last_name == 'lopez'
+    assert user.email == 'juan.feli.lopez@gmail.com'
+    assert user.is_admin is False
+    print('User creation test passed')
+
+test_user_creation()
+========================
+#!/usr/bin/python3
+from app.models.place import Place
+from app.models.user import User, Owner, Guest
+from app.models.review import Review
+
+
+def test_place_creation():
+    user = User(id="341", first_name="juan", last_name="smith", email="juan@gmail.com")
+    place = Place(title="Cozy Apartment", description="A nice place to stay", price=100, latitude=37.8843, longitude=-122.4194, owner=Owner)
+
+    review = Review(id="1", text="Great stay!", rating=5, place=place, user=Guest)
+    place.add_review(review)
+
+    assert place.title == "Cozy Apartment"
+    assert place.price == 100
+    assert len(place.reviews) == 1
+    assert place.reviews[0].text == "Great stay!"
+    print("Place creation and relationshipp test passed!")
+
+test_place_creation()
+==================================
+#!/usr/bin/python3
+from app.models.amenity import Amenity
+
+
+def test_amenity_creation():
+    amenity = Amenity(id="145", name="Wi-Fi")
+    assert amenity.name == "Wi-Fi"
+    print("Amenity creation passed!")
+
+
+test_amenity_creation()
+```
