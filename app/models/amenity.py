@@ -5,7 +5,7 @@ from base_model import BaseModel
 
 class Amenity(BaseModel):
 
-    def __init__(self, id, name=''):
+    def __init__(self, id, name):
         super().__init__()
         self.id = id
         self.name = name
@@ -35,13 +35,6 @@ class Amenity(BaseModel):
         'view_balcony': None
     }
     """
-
-    def __init__(self, name, AmenList):
-        """set the amenities available on place"""
-
-        self.name = name
-        self.AmenList = []
-
 
     def to_dict(self):
         return {

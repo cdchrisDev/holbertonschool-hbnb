@@ -1,58 +1,131 @@
-# What are the steps involved in this web application ?
-1. instante the Flask App Object on `app.__init__`
-    * By doing `Flask(__name__)` this tells flask that we are going to use the app as the __name__ special method set. But, we can also create a function to actually make our app be born
-    * app instante from `Flask` Module
-    * api instante a class called `Api` from `flask_restx` which takes as the first argument the `Flask` instance and the rest of the arguments are meta 
-```
-app = Flask(__name__)
-api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API', doc='/api/v1/')
-```
-2. For now, database will be `Repository` so we'll need a few functions to deal with storage management, but first where is our storage? we're gonna set it by default doing `def __init__(self): self._storage = {}`
-    * Using abstract classes we set up the basic functionality like an empty function with the arguments that will use that specific function, for example `def update(self, obj_id, data)`
-    * Then we create a storage handler class that will inheret all the op-func made in the `repository` abstract class: `InMemoryRepository(Repository)` this class will implement those functions to work as intended. For example:
-```
-def delete(self, obj_id):
-    if obj in self._storage:
-        del self._storage[obj_id]
-```
-3. Now, to implement good facade pattern we import our "database handler" into a file which serve
-as individual entity management
+# Business logic and API implementation
+## BaseModel
+To start developing our classes that will be the core of our app, we need to design the
+commun dominator of our logic.
+
+1. Each class should be unique identified and must record the time when was created and updated
 ```python
-class HBnBFacade:
+#!/usr/bin/python3
+import uuid
+from datetime import datetime
+
+
+time = "%Y-%m-%dT%H:%M:%S.%f" ### time formating
+
+class BaseModel:
+    """Base Class for all obj"""
+    
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
+    def save(self):
+        """Save obj state at datetime"""
+
+        self.updated_at = datetime.now()
+
+    def update(self, data):
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.save()
 ```
-4. We instante the Facade class
+2. Now, inheriting from `BaseModel` the remaining entities have to deal their own business
+**PLACE**
 ```python
-from app.services.facade import HBnBFacade
+#!/usr/bin/python3
+"""This module define the places entity"""
+from datetime import datetime, timezone
+from base_model import BaseModel
 
-facade = HBnBFacade()
+
+class Place(BaseModel):
+    """Define places entity"""
+
+    def __init__(self,
+                 title: str = None, 
+                 description: str = None, 
+                 address: str = None, 
+                 country: str = None, 
+                 city: str = None, 
+                 latitude: float = None, 
+                 longitude: float = None, 
+                 number_of_rooms: int = None, 
+                 bathrooms: int = None, 
+                 price_per_night: float = None, 
+                 max_guests: int = None, 
+                 amenities: list = None):
+        super().__init__()
+        
+        self.title = title
+        self.description = description
+        self.country = Country(country_name)
+        self.city = city_name
+        self.latitude = latitude
+        self.longitude = longitude
+        self.number_of_rooms = number_of_rooms
+        self.bathrooms = bathrooms
+        self.price_per_night = price_per_night
+        self.max_guests = max_guests
+        self.amenities = []
+        self.reviews = []
+
+    def add_review(self, review):
+        """add review"""
+        self.reviews.append(review)
+
+    def add_amenities(self, amenity):
+        """add amenity"""
+        self.amenities.append(amenity)
 ```
-5. set the script to run the entire app in `run.py` on root
+
+3. Testing, we create a folder called test where will be testing our core logic independently and the relationship between them
 ```python
-from app import create_app
+#!/usr/bin/python3
+from app.models.user import User
 
-app = create_app() #it does not truncate variables because there not in the same scope
 
-if __name__ == '__main__':
-    app.run(debug=True)
-```
-6. Basic config
-```py
-import os
+def test_user_creation():
+    user = User(id="14124!", first_name='John', last_name='lopez', email='juan.feli.lopez@gmail.com')
+    assert user.first_name == 'John'
+    assert user.last_name == 'lopez'
+    assert user.email == 'juan.feli.lopez@gmail.com'
+    assert user.is_admin is False
+    print('User creation test passed')
 
-class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
-    DEBUG = False
+test_user_creation()
+========================
+#!/usr/bin/python3
+from app.models.place import Place
+from app.models.user import User, Owner, Guest
+from app.models.review import Review
 
-class DevelopmentConfig(Config):
-    DEBUG = True
 
-config = {
-    'development': DevelopmentConfig,
-    'default': DevelopmentConfig
-}
+def test_place_creation():
+    user = User(id="341", first_name="juan", last_name="smith", email="juan@gmail.com")
+    place = Place(title="Cozy Apartment", description="A nice place to stay", price=100, latitude=37.8843, longitude=-122.4194, owner=Owner)
+
+    review = Review(id="1", text="Great stay!", rating=5, place=place, user=Guest)
+    place.add_review(review)
+
+    assert place.title == "Cozy Apartment"
+    assert place.price == 100
+    assert len(place.reviews) == 1
+    assert place.reviews[0].text == "Great stay!"
+    print("Place creation and relationshipp test passed!")
+
+test_place_creation()
+==================================
+#!/usr/bin/python3
+from app.models.amenity import Amenity
+
+
+def test_amenity_creation():
+    amenity = Amenity(id="145", name="Wi-Fi")
+    assert amenity.name == "Wi-Fi"
+    print("Amenity creation passed!")
+
+
+test_amenity_creation()
 ```

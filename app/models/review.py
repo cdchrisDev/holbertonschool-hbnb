@@ -2,16 +2,17 @@
 from datetime import datetime, timezone
 from place import Place
 from user import User
+from base_model import BaseModel
 
-class Review(User, Place):
+class Review(BaseModel):
     """Define a review"""
-    def __init__(self, id, text='', rating=int(0), place, user):
+    def __init__(self, id, text, rating, place, user):
         super().__init__()
         self.id = id
         self.text = text
         self.rating = rating
-        self.place = Place()
-        self.user = User()
+        self.place = place
+        self.user = user
     
     def save(self):
         """Save the review only if the user is not the host of the place."""

@@ -2,27 +2,22 @@
 """This module define the places entity"""
 from datetime import datetime, timezone
 from base_model import BaseModel
-from user import User
+from user import User, Owner
 
 
 class Place(BaseModel):
     """Define places entity"""
 
-    def __init__(self, title, descrption, price, latutide, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
         self.title = title
         self.description = description
-        self.country = Country(country_name)
-        self.city = city_name
         self.latitude = latitude
         self.longitude = longitude
-        self.number_of_rooms = number_of_rooms
-        self.bathrooms = bathrooms
         self.price = price
-        self.max_guests = max_guests
         self.amenities = [] #related amenities
         self.reviews = [] #related reviews
-        self.owner = User()
+        self.owner = Owner("asda")
 
     def add_review(self, review):
         """add review"""
