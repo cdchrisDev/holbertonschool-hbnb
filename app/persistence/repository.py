@@ -1,25 +1,25 @@
 #!/usr/bin/python3
-from abc import ABC, Abstractmethond
+from abc import ABC, abstractmethod
 
 
 class Repository(ABC):
-    @abstractmethond
+    @abstractmethod
     def add(self, obj):
         pass
 
-    @abstractmethond
+    @abstractmethod
     def get(self, obj_id):
         pass
 
-    @abstractmethond
+    @abstractmethod
     def update(self, obj_id, data):
         pass
 
-    @abstractmethond
+    @abstractmethod
     def delete(self, obj_id):
         pass
 
-    @abstractmethond
+    @abstractmethod
     def get_by_attribute(self, attr_name, attr_value):
         pass
 

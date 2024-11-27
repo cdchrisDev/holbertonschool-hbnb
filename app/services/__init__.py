@@ -1,6 +1,9 @@
 #!/usr/bin/python3
-from app.services.facade import HBnBFacade
+from app.services.facade import UserCns
 
 
-facade = HBnBFacade()
+class facade(UserCns):
+    pass
+
+
 
