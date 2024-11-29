@@ -1,8 +1,11 @@
 #!/usr/bin/python3
-from app.services.facade import UserCns
+from app.services.facade import UserCns, AmenityCnt
 
 
-class facade(UserCns):
+class facadeUsr(UserCns):
+    pass
+
+class facadeAmen(AmenityCnt):
     pass
 
 
